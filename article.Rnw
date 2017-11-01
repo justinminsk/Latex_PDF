@@ -1,0 +1,97 @@
+\documentclass{article}
+
+\begin{document}
+
+\title{Sense and Sensibility Wordcloud}
+\author{Justin Minsk}
+\maketitle
+
+\begin{abstract}
+
+In this atricle we will construct a wordcloud, using the tidytext R pakage. The text we will be using is Jane Austen's Sense and Sensibility.
+
+\end{abstract}
+
+\section{Sense and Sensibility}
+
+Sense and Sensibilty is a novel by Jane Austen, published in 1811. We will create a wordcloud of the most used words in the book.
+
+\section{The Jane Austen Package}
+
+There is a relatively new package for R, janeaustenr, that gives access to all of her books. You need to install the package then bring in the library. Then use austenbooks to get the data and can input the data into a data frame.
+
+<<message=FALSE,warning=FALSE>>=
+library(janeaustenr)
+sns <- austen_books()
+#bring in all of jane austen's books
+@
+
+This data frame has two columns named books and text.
+
+<<message=FALSE,warning=FALSE>>=
+library(dplyr)
+library(tidytext)
+library(tm)
+sns <- sns%>%
+  filter(book == "Sense & Sensibility")
+#filter to just get Sense and Sensibility text
+head(sns)
+@
+
+\noindent This data frame only contins the book Sense and Sensibility now. Now to clean the data.
+
+\section{Some Data-Cleaning}
+
+First we want to remove all of the 'Chapter' lines.
+
+<<>>=
+library(stringr)
+sns$book <- as.character(sns$book)
+#un factor the book column
+sns <- sns%>%
+  filter(!str_detect(sns$text, "^CHAPTER"))
+#filter out all of the CHAPTER lines
+@
+
+Next we use indexes to remove the beging and the ending.
+
+<<message=FALSE,warning=FALSE>>=
+
+sns <- sns[12:12574, ]
+#make sns start after the title 
+
+sns <- sns[1:12560, ]
+#get rid of the end
+@
+
+Now we need to get the words by themselves and make sure that we have a count.
+
+<<message=FALSE,warning=FALSE>>=
+words_df <- sns%>%
+  unnest_tokens(word, text)
+#split the lines into words
+
+words_df <- words_df%>%
+  filter(!(word %in% stop_words$word))
+#get rid of common words that are not unique (the, a, etc.)
+
+words_free <- words_df%>%
+  group_by(word)%>%
+  summarise(count = n())
+#make a count of the word
+@
+
+Then we make a wordcloud
+
+\section{Wordcloud}
+
+First we need the library then we cna make the wordcloud.
+
+<<message=FALSE,warning=FALSE>>=
+library(wordcloud)
+wordcloud(words_free$word, words_free$count, min.freq = 25)
+#make a word cloud
+@
+
+
+\end{document}

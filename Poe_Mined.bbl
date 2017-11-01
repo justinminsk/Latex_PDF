@@ -1,0 +1,14 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Grolemund}{2017}]{Wickham}
+Grolemund, H. W. .~G. (2017).
+\newblock {\em R for Data Science: Import, Tidy, Transform, Visualize, and
+  Model Data}.
+\newblock O'Reilly Media.
+
+\bibitem[\protect\astroncite{Robinson}{2017}]{Silge}
+Robinson, J. S. .~D. (2017).
+\newblock {\em Text Mining with R: A Tidy Approach}.
+\newblock O'Reilly Media.
+
+\end{thebibliography}

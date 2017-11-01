@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage{natbib}
+\begin{document}
+
+\title{A Look at Poe's Work}
+\author{Justin David Minsk}
+\maketitle
+
+\begin{abstract}
+Edgar Allen Poe is a well known short story and poem writer that tended to write poems in the horror genre such as "The Raven", "The Cask of Amontillado", "The Tell-Tale Heart", and many other horror fan's favorites. The purpose of this paper is to look at the book, "The Complete Poetical Works Of Edgar Allen Poe" and find the most used words in his poetical works, just in time for Halloween.
+\end{abstract}
+
+\section{"The Complete Poetical Works Of Edgar Allen Poe"}
+The first task is to get "The Complete Poetical Works Of Edgar Allen Poe" into R to be able to mine the text. First we need the libraries that we will use to mine the text.
+
+<<warning=FALSE,message=FALSE>>=
+library(tidytext)
+library(tm)
+library(wordcloud)
+library(stringr)
+library(dplyr)
+library(knitr)
+library(gutenbergr)
+@
+
+\noindent Then we use gutenbergr to extract the data into a data frame.
+
+<<warning=FALSE,message=FALSE>>=
+ids <- gutenberg_works(author == str_extract(author, "Poe, Edgar Allan"))
+#get Poe work's IDs
+
+head(ids$title)
+#see Poe work's IDs
+
+df <- gutenberg_download(10031)
+#get the complete poetical works of Edgar Allan Poe
+@
+
+\noindent The data frame now looks like this:
+
+<<>>=
+df$text
+@
+
+\section{Cleaning the Text}
+Next step is to turn the text into a list of words. We use stringr to do the parsing for us.
+
+<<>>=
+words_df <- df%>%
+  unnest_tokens(word, text)
+#split the lines into words
+
+head(words_df)
+@
+
+\noindent Then we need to get rid of all the common words that do not give us anything unique in the text compared to other texts. We do this by using a list of words that are commonly used. This text is unique since it is written in an older English and has some extra common words that need to be filtered out past the normal list.
+
+<<>>=
+words_df <- words_df%>%
+  filter(!(word %in% stop_words$word))
+#get rid of common words that are not unique (the, a, etc.)
+
+words_df <- words_df%>%
+  filter(!word == "thy" & !word == "thou" & !word == "thee")
+#some older words not in out stop_word list that are not useful
+
+@
+
+\noindent Now to create a count of each instance of a word. Using simple dplyr functions this can easily be done.
+
+<<>>=
+words_free <- words_df%>%
+  group_by(word)%>%
+  summarise(count = n())%>%
+  arrange(-count)
+#make a count of the word
+
+head(words_free)
+@
+
+\section{Wordcloud}
+Now we can create a wordcloud, a good visual representation of the most common words. The bigger the word the higher the frequency. We will use the library wordcloud to generate this image.
+
+<<>>=
+wordcloud(words_free$word, words_free$count, min.freq = 25)
+#make a word cloud
+@
+
+\bibliographystyle{apa}
+\bibliography{bib}
+\nocite{*}
+\end{document}

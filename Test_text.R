@@ -79,8 +79,9 @@ wordcloud(words_free$word, words_free$count, min.freq = 25)
 
 library(gutenbergr)
 
-gutenberg_works(title == "Dracula")
-#get Dracula text
+packages <- c('dplyr', 'stringr', 'tidytext', 'tm', 'wordcloud')
+knitr::write_bib(packages, 'bib.bib')
+#add packages to references 
 
 gutenberg_works(author == str_extract(author, "Poe, Edgar Allan"))
 #see Poes work's IDs
@@ -108,3 +109,39 @@ words_free <- words_df%>%
 
 wordcloud(words_free$word, words_free$count, min.freq = 25)
 #make a word cloud
+
+#-------------
+
+sentiments
+#list of dicts of sentiments with assinged to words
+
+get_sentiments('nrc')
+#gives words a sentiment like fear, or happy, etc.
+
+gutenberg_works(title == "Dracula")
+#get Dracula id
+
+nrc <- get_sentiments('nrc')
+#put the nrc into a dataframe
+
+nrc_fear <- nrc%>%
+  filter(sentiment == 'fear')
+#get only the fear words from nrc
+
+dracula <- gutenberg_download(345)
+#get dracula text
+
+dracula_words <- dracula%>%
+  unnest_tokens(word, text)
+#split the lines into words
+
+dracula_fear_words <- inner_join(nrc_fear, dracula_words)
+#find words in dracula that also are in nrc_fear
+
+dfw_free <- dracula_fear_words%>%
+  group_by(word)%>%
+  summarise(count = n())
+#make a count of the word
+
+wordcloud(dfw_free$word, dfw_free$count, min.freq = 7)
+#create a word cloud of the fear words

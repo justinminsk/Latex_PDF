@@ -1,14 +1,41 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\astroncite{Feinerer and Hornik}{2017}]{R-tm}
+Feinerer, I. and Hornik, K. (2017).
+\newblock {\em tm: Text Mining Package}.
+\newblock R package version 0.7-1.
+
+\bibitem[\protect\astroncite{Fellows}{2014}]{R-wordcloud}
+Fellows, I. (2014).
+\newblock {\em wordcloud: Word Clouds}.
+\newblock R package version 2.5.
+
 \bibitem[\protect\astroncite{Grolemund}{2017}]{Wickham}
 Grolemund, H. W. .~G. (2017).
 \newblock {\em R for Data Science: Import, Tidy, Transform, Visualize, and
   Model Data}.
 \newblock O'Reilly Media.
 
+\bibitem[\protect\astroncite{Robinson and Silge}{2017}]{R-tidytext}
+Robinson, D. and Silge, J. (2017).
+\newblock {\em tidytext: Text Mining using 'dplyr', 'ggplot2', and Other Tidy
+  Tools}.
+\newblock R package version 0.1.4.
+
 \bibitem[\protect\astroncite{Robinson}{2017}]{Silge}
 Robinson, J. S. .~D. (2017).
 \newblock {\em Text Mining with R: A Tidy Approach}.
 \newblock O'Reilly Media.
+
+\bibitem[\protect\astroncite{Wickham}{2017}]{R-stringr}
+Wickham, H. (2017).
+\newblock {\em stringr: Simple, Consistent Wrappers for Common String
+  Operations}.
+\newblock R package version 1.2.0.
+
+\bibitem[\protect\astroncite{Wickham et~al.}{2017}]{R-dplyr}
+Wickham, H., Francois, R., Henry, L., and Müller, K. (2017).
+\newblock {\em dplyr: A Grammar of Data Manipulation}.
+\newblock R package version 0.7.4.
 
 \end{thebibliography}
